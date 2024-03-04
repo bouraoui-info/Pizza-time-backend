@@ -1,13 +1,13 @@
-// product.service.ts
-
+// Importez votre entité Product
+import { Repository } from 'typeorm';
+import { Product } from '../types/products'; 
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindOneOptions, Repository } from 'typeorm';
-import { Product } from '../types/products';
 
 @Injectable()
 export class ProductService {
   constructor(
+    // Injectez le Repository<Product>
     @InjectRepository(Product) 
     private productRepository: Repository<Product>,
   ) {}

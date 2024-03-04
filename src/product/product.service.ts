@@ -1,37 +1,40 @@
-
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
-
+import { InjectRepository } from '@nestjs/typeorm'; // Utiliser InjectRepository pour TypeORM
+import { Repository } from 'typeorm';
 import { Product } from '../types/products';
 import { User } from '../types/user';
 import { CreateProductDTO, UpdateProductDTO } from './product.dto';
 
 @Injectable()
 export class ProductService {
-  constructor(@InjectModel('Product') private productModel: Model<Product>) {}
+  constructor(
+    @InjectRepository(Product)
+    private productRepository: Repository<Product>,
+  ) {}
 
   async findAll(): Promise<Product[]> {
-    return await this.productModel.find().populate('owner');
+    return await this.productRepository.find();
   }
 
   async findByOwner(userId: string): Promise<Product[]> {
-    return await this.productModel.find({ owner: userId }).populate('owner');
+    return await this.productRepository.find({ where: { owner: userId } });
   }
 
   async findById(id: string): Promise<Product> {
-    const product = await this.productModel.findById(id).populate('owner');
+    const product = await this.productRepository.findOne(id);
     if (!product) {
-      throw new HttpException('Product not found', HttpStatus.NO_CONTENT);
+      throw new HttpException('Product not found', HttpStatus.NOT_FOUND);
     }
     return product;
   }
 
   async create(productDTO: CreateProductDTO, user: User): Promise<Product> {
-    const product = await this.productModel.create({
+    const product = this.productRepository.create({
       ...productDTO,
-      owner: user,
+      owner: user, 
     });
-    await product.save();
-    return product.populate('owner');
+    await this.productRepository.save(product);
+    return product;
   }
 
   async update(
@@ -39,26 +42,28 @@ export class ProductService {
     productDTO: UpdateProductDTO,
     userId: string,
   ): Promise<Product> {
-    const product = await this.productModel.findById(id);
-    if (userId !== product.owner.toString()) {
+    const product = await this.productRepository.findOne(id);
+    if (userId !== product.owner.id) {
       throw new HttpException(
         'You do not own this product',
         HttpStatus.UNAUTHORIZED,
       );
     }
-    await product.update(productDTO);
-    return await this.productModel.findById(id).populate('owner');
+    this.productRepository.merge(product, productDTO);
+    await this.productRepository.save(product);
+    return product;
   }
 
   async delete(id: string, userId: string): Promise<Product> {
-    const product = await this.productModel.findById(id);
-    if (userId !== product.owner.toString()) {
+    const product = await this.productRepository.findOne(id);
+    if (userId !== product.owner.id) {
       throw new HttpException(
         'You do not own this product',
         HttpStatus.UNAUTHORIZED,
       );
     }
-    await product.remove();
-    return product.populate('owner');
+    await this.productRepository.remove(product);
+    return product;
   }
 }
+
