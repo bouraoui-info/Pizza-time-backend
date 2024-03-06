@@ -1,18 +1,18 @@
 import { Module } from '@nestjs/common';
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm'; // Importez TypeOrmModule
-import { User } from '../models/user.entity'; // Importez l'entité User
+import { User } from "../users/user.entity"
 
 import { HttpExceptionFilter } from './http-exception.filter';
 import { LoggingInterceptor } from './logging.interceptor';
-import { UserService } from '../users/users.service';
+import { UsersService } from '../users/users.service';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]), // Utilisez TypeOrmModule.forFeature() avec l'entité User
   ],
   providers: [
-    UserService,
+    UsersService,
     {
       provide: APP_FILTER,
       useClass: HttpExceptionFilter,
@@ -22,6 +22,6 @@ import { UserService } from '../users/users.service';
       useClass: LoggingInterceptor,
     },
   ],
-  exports: [UserService],
+  exports: [UsersService],
 })
 export class SharedModule {}

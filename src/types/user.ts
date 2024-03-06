@@ -1,3 +1,4 @@
+import {Product} from '../types/products';
 export interface Address {
     addr1: string;
     addr2: string;
@@ -14,5 +15,8 @@ export interface Address {
     seller: boolean;
     address: Address;
     created: Date;
+    email: string;
+    phone:number; 
+    products: Product[];
   }
   

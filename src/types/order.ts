@@ -12,7 +12,7 @@ import {
 
   
   import { SellerGuard } from '../guards/seller.guard';
-  import { Product } from '../types/products';
+  import { Product } from '../product/product.entity';
 
   import { User as UserDocument } from '../types/user';
   import { User } from '../utilities/user.decorator';
@@ -59,21 +59,21 @@ import {
     @Put(':id')
     @UseGuards(AuthGuard('jwt'), SellerGuard)
     async update(
-      @Param('id') id: string, 
+      @Param('id') id: number, 
       @Body() product: UpdateProductDTO,
       @User() user: UserDocument,
     ): Promise<Product> {
       const { id: userId } = user;
-      return await this.productService.update(id, product, userId.toString());
+      return await this.productService.update(id, product, userId);
     }
 
     @Delete(':id')
     @UseGuards(AuthGuard('jwt'), SellerGuard)
     async delete(
-      @Param('id') id: string,
+      @Param('id') id: number,
       @User() user: UserDocument,
     ): Promise<Product> {
       const { id: userId } = user;
-      return await this.productService.delete(id, userId.toString());
+      return await this.productService.delete(id, userId);
     }
 }

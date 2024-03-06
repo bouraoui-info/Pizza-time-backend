@@ -11,7 +11,7 @@ import {
   import { AuthGuard } from '@nestjs/passport';
   
   import { SellerGuard } from '../guards/seller.guard';
-  import { Product } from '../types/products';
+  import { Product } from '../product/product.entity';
   import { User as UserDocument } from '../types/user';
   import { User } from '../utilities/user.decorator';
   import { CreateProductDTO, UpdateProductDTO } from './product.dto';
@@ -34,8 +34,8 @@ import {
     }
   
     @Get('/seller/:id')
-    async listBySeller(@Param('id') id: string): Promise<Product[]> {
-      return await this.productService.findByOwner(id);
+    async listBySeller(@Param('id') id: number): Promise<Product[]> {
+      return await this.productService.findByOwner(id as any);
     }
   
     @Post()
@@ -48,14 +48,14 @@ import {
     }
   
     @Get(':id')
-    async read(@Param('id') id: string): Promise<Product> {
+    async read(@Param('id') id: number): Promise<Product> {
       return await this.productService.findById(id);
     }
   
     @Put(':id')
     @UseGuards(AuthGuard('jwt'), SellerGuard)
     async update(
-      @Param('id') id: string,
+      @Param('id') id: number,
       @Body() product: UpdateProductDTO,
       @User() user: UserDocument,
     ): Promise<Product> {
@@ -66,7 +66,7 @@ import {
     @Delete(':id')
     @UseGuards(AuthGuard('jwt'), SellerGuard)
     async delete(
-      @Param('id') id: string,
+      @Param('id') id: number,
       @User() user: UserDocument,
     ): Promise<Product> {
       const { id: userId } = user;
