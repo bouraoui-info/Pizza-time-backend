@@ -14,4 +14,5 @@ export class Product {
 
     @ManyToOne(() => User, (user) => user.products)
     owner: User;
+
 }

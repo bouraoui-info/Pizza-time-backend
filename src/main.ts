@@ -13,7 +13,7 @@ async function bootstrap() {
   .setTitle('PIZZA-TIME')
   .setDescription('PIZZA-TIME API description')
   .setVersion('1.0')
-  .addTag('cats')
+  .addTag('Aures')
   .build();
   app.setGlobalPrefix('api');
 const document = SwaggerModule.createDocument(app, config);
