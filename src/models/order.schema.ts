@@ -1,11 +1,13 @@
 // order.entity.ts
 
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { User } from './user.schema';
 
 @Entity()
 export class Order {
+  
   @PrimaryGeneratedColumn()
-  id: number;
+  id: string;
 
   @Column()
   customerName: string;
@@ -18,4 +20,6 @@ export class Order {
 
   @Column({ default: () => 'CURRENT_TIMESTAMP' })
   orderDate: Date;
+  @Column()
+  owner: User
 }

@@ -34,7 +34,7 @@ import {
     }
   
     @Get('/seller/:id')
-    async listBySeller(@Param('id') id: number): Promise<Product[]> {
+    async listBySeller(@Param('id') id: string): Promise<Product[]> {
       return await this.productService.findByOwner(id as any);
     }
   
@@ -48,14 +48,14 @@ import {
     }
   
     @Get(':id')
-    async read(@Param('id') id: number): Promise<Product> {
+    async read(@Param('id') id: string): Promise<Product> {
       return await this.productService.findById(id);
     }
   
     @Put(':id')
     @UseGuards(AuthGuard('jwt'), SellerGuard)
     async update(
-      @Param('id') id: number,
+      @Param('id') id: string,
       @Body() product: UpdateProductDTO,
       @User() user: UserDocument,
     ): Promise<Product> {
@@ -66,7 +66,7 @@ import {
     @Delete(':id')
     @UseGuards(AuthGuard('jwt'), SellerGuard)
     async delete(
-      @Param('id') id: number,
+      @Param('id') id: string,
       @User() user: UserDocument,
     ): Promise<Product> {
       const { id: userId } = user;

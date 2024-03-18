@@ -23,7 +23,7 @@ export class ProductService {
     return await this.productRepository.find();
   }
 
-  async findProductById(id: number): Promise<Product> {
+  async findProductById(id: string): Promise<Product> {
     return await this.productRepository.findOne({where:{id}}); 
   }
 

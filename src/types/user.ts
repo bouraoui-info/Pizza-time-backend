@@ -9,7 +9,7 @@ export interface Address {
   }
   
   export interface User {
-    id: number; // Ajoutez une propriété pour l'identifiant, car dans PostgreSQL, l'identifiant peut être numérique
+    id: string; // Ajoutez une propriété pour l'identifiant, car dans PostgreSQL, l'identifiant peut être numérique
     username: string;
     password: string; // Vous pouvez laisser password comme une propriété modifiable
     seller: boolean;

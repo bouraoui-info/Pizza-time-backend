@@ -27,7 +27,7 @@ export class ProductService {
     return await this.productRepository.find({ where: { owner: user } });
   }
 
-  async FindById(id: number): Promise<Product> {
+  async FindById(id: string): Promise<Product> {
     const product = await this.productRepository.findOne({where :{id}});
     if (!product) {
       throw new HttpException('Product not found', HttpStatus.NOT_FOUND);
@@ -46,12 +46,12 @@ export class ProductService {
   }
 
   async update(
-    id: number ,
+    id: string ,
     productDTO: UpdateProductDTO,
-    userId: number,
+    userid: string,
   ): Promise<Product> {
     const product = await this.productRepository.findOne({where :{id}});
-    if (userId !== product.owner.id) {
+    if (userid !== product.owner.id) {
       throw new HttpException(
         'You do not own this product',
         HttpStatus.UNAUTHORIZED,
@@ -62,9 +62,9 @@ export class ProductService {
     return product;
   }
 
-  async delete(id: number, userId: number): Promise<Product> {
+  async delete(id: string, userid: string): Promise<Product> {
     const product = await this.productRepository.findOne({where :{id}});
-    if (userId !== product.owner.id) {
+    if (userid !== product.owner.id) {
       throw new HttpException(
         'You do not own this product',
         HttpStatus.UNAUTHORIZED,
