@@ -16,7 +16,10 @@ import {
   import { User } from '../utilities/user.decorator';
   import { CreateProductDTO, UpdateProductDTO } from './product.dto';
   import { ProductService } from './product.service';
+import { ApiTags } from '@nestjs/swagger';
   
+  @ApiTags('Product')
+
   @Controller('product')
   export class ProductController {
     constructor(private productService: ProductService) {}
