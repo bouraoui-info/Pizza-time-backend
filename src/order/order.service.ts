@@ -26,10 +26,18 @@ export class OrdersService {
     return orders;
   }
 
-  async createOrder(orderDTO: CreateOrderDTO, userId: User) {
-    const order = new Order();
-    owner: userId;
-    order.products = orderDTO.products.map(product => product.product);
+  async createOrder(orderDTO: Order) {
+    console.log({orderDTO});
+    
+    let order = {
+      totalAmount: orderDTO.totalPrice,
+      user:orderDTO.owner,
+      product:orderDTO.products
+    }
+
+    
+    // owner: userId;
+    // order.products = orderDTO.products.map(product => product.product);
     const savedOrder = await this.orderRepository.save(order);
     return savedOrder;
   }

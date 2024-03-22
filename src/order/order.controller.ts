@@ -25,10 +25,12 @@ export class OrderController {
 
 
   @Post()
-  @UseGuards(AuthGuard('jwt'))
-  @ApiOperation({ summary: 'Create a new order' })
-  @ApiResponse({ status: 201, description: 'Order created successfully', type: Order }) // Réponse Swagger pour la création réussie de la commande
-  createOrder(@Body() createOrderDto: CreateOrderDTO, @User() { id }: any) {
-    return this.orderService.createOrder(createOrderDto, id);
+  // @UseGuards(AuthGuard('jwt'))
+  // @ApiOperation({ summary: 'Create a new order' })
+  // @ApiResponse({ status: 201, description: 'Order created successfully', type: Order }) // Réponse Swagger pour la création réussie de la commande
+  async createOrder(@Body() order:Order) {
+    console.log({order});
+    
+    return await this.orderService.createOrder(order);
   }
 }

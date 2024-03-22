@@ -9,9 +9,9 @@ id: string;
 @Column()
 totalAmount : number;
 
-@ManyToOne(() => User, (user) => user.orders)
+// @ManyToOne(() => User, (user) => user.orders)
 user: User;
-@ManyToOne(()=> User, (user) => user.products)
+// @ManyToOne(()=> User, (user) => user.products)
     product: Product; 
 }
 
