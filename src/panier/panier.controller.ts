@@ -36,7 +36,7 @@ export class PanierController {
         @Body('etat') etat: string,
         @Body('prix') prix: number,
         @Body('userId') userId: string,
-        @Body('time') time: Date,
+        @Body('time') time: string,
     ) {
         const partialPanier: DeepPartial<Panier> = {
             panier:cartItem,

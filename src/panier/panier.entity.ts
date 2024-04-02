@@ -15,6 +15,6 @@ export class Panier {
   prix: number;
   @Column()
   userId :string ;
-  @Column({type: 'timestamp', default: () => 'CURRENT_TIMESTAMP'})
-  time: Date;
+  @Column()
+  time: string;
 }
