@@ -16,7 +16,7 @@ export class ProductService {
   async findAll(): Promise<Product[]> {
     return await this.productRepository.find();
   }
-  async findByOwner(userId: string): Promise<Product[]> {
+  async findByOwner(userId: number): Promise<Product[]> {
     // Trouver l'utilisateur par son identifiant
     const user = await this.userRepository.findOne(userId);
     if (!user) {
@@ -27,8 +27,8 @@ export class ProductService {
     return await this.productRepository.find({ where: { owner: user } });
   }
 
-  async FindById(id: string): Promise<Product> {
-    const product = await this.productRepository.findOne({where :{id}});
+  async FindById(id: number): Promise<Product> {
+    const product = await this.productRepository.findOne({where :{id: id.toString()}});
     if (!product) {
       throw new HttpException('Product not found', HttpStatus.NOT_FOUND);
     }
@@ -39,18 +39,18 @@ export class ProductService {
   async create(productDTO: CreateProductDTO, user: User): Promise<Product> {
     const product = this.productRepository.create({
       ...productDTO,
-      owner: user, 
+      owner: user as any,
     });
     await this.productRepository.save(product);
     return product;
   }
 
   async update(
-    id: string ,
+    id: number ,
     productDTO: UpdateProductDTO,
-    userid: string,
+    userid: number,
   ): Promise<Product> {
-    const product = await this.productRepository.findOne({where :{id}});
+    const product = await this.productRepository.findOne({where :{id: id.toString()}});
     if (userid !== product.owner.id) {
       throw new HttpException(
         'You do not own this product',
@@ -62,8 +62,8 @@ export class ProductService {
     return product;
   }
 
-  async delete(id: string, userid: string): Promise<Product> {
-    const product = await this.productRepository.findOne({where :{id}});
+  async delete(id: number, userid: number): Promise<Product> {
+    const product = await this.productRepository.findOne({where :{id: id.toString()}});
     if (userid !== product.owner.id) {
       throw new HttpException(
         'You do not own this product',

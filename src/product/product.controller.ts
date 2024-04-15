@@ -37,7 +37,7 @@ import { ApiTags } from '@nestjs/swagger';
     }
   
     @Get('/seller/:id')
-    async listBySeller(@Param('id') id: string): Promise<Product[]> {
+    async listBySeller(@Param('id') id: number): Promise<Product[]> {
       return await this.productService.findByOwner(id as any);
     }
   
@@ -51,14 +51,14 @@ import { ApiTags } from '@nestjs/swagger';
     }
   
     @Get(':id')
-    async read(@Param('id') id: string): Promise<Product> {
+    async read(@Param('id') id: number): Promise<Product> {
       return await this.productService.findById(id);
     }
   
     @Put(':id')
     @UseGuards(AuthGuard('jwt'), SellerGuard)
     async update(
-      @Param('id') id: string,
+      @Param('id') id: number,
       @Body() product: UpdateProductDTO,
       @User() user: UserDocument,
     ): Promise<Product> {
@@ -69,7 +69,7 @@ import { ApiTags } from '@nestjs/swagger';
     @Delete(':id')
     @UseGuards(AuthGuard('jwt'), SellerGuard)
     async delete(
-      @Param('id') id: string,
+      @Param('id') id: number,
       @User() user: UserDocument,
     ): Promise<Product> {
       const { id: userId } = user;

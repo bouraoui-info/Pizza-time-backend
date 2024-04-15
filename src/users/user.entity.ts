@@ -1,13 +1,24 @@
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm";
-
-
+import { Product } from "../product/product.entity";
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm";
 @Entity()
 export class User {
+
     @PrimaryGeneratedColumn()
-    id: string;
+    id: number;
     @Column()
     email: string;
     @Column()
+    name: string;
+    @Column()
+    lastname: string;
+    @Column()
+    phone: string;
+    @Column()
+    address: string;
+    @Column()
+    image: string;
+    @Column()
     password: string;
-    products: any;
+    @OneToMany(() => Product, (product) => product.owner)
+    products: Product[];
 }
